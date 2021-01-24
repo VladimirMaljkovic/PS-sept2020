@@ -13,6 +13,7 @@ namespace Domen
         VratiSveZahteve,
         VratiLaboratorije,
         VratiOsiguranaLica,
-        UpdateZahteve
+        UpdateZahteve,
+        SacuvajZahteve
     }
 }

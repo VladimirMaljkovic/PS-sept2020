@@ -12,6 +12,6 @@ namespace Domen
         public Operacija Operacija { get; set; }
         public string KorisnickoIme { get; set; }
         public string Lozinka { get; set; }
-
+        public List<Zahtev> ZahteviZaBazu { get; set; }
     }
 }

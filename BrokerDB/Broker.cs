@@ -105,6 +105,11 @@ namespace BrokerBP
             return osiguranaLica;
         }
 
+        public object SacuvajZahteve(List<Zahtev> zahteviZaBazu)
+        {
+            //ovde mi treba update
+        }
+
         public object VratiLaboratorije()
         {
             SqlCommand command = connection.CreateCommand();
