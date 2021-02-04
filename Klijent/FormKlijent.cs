@@ -35,7 +35,6 @@ namespace Klijent
         private void FormKlijent_Load(object sender, EventArgs e)
         {
             this.Location = new Point(300, 100);
-            zahtevi = Connection.Instance.GetZahtevi();
             osiguranaLica = Connection.Instance.GetOsiguranaLica();
             laboratorije = Connection.Instance.GetLaboratorije();
 
@@ -46,6 +45,7 @@ namespace Klijent
 
         private void fixDGVData()
         {
+            zahtevi = Connection.Instance.GetZahtevi();
             zahteviBinding = new BindingList<Zahtev>(zahtevi);
             dgvZahtevi.DataSource = zahteviBinding;
 
@@ -55,7 +55,6 @@ namespace Klijent
                 HeaderText = "Rezultat",
                 Name = "RezultatCombo",
                 FlatStyle = FlatStyle.Flat
-
             };
 
             DataGridViewComboBoxColumn tipTestaCol = new DataGridViewComboBoxColumn
@@ -100,7 +99,7 @@ namespace Klijent
             dgvZahtevi.Columns["DatumVremeTestiranja"].DisplayIndex = 0;
             dgvZahtevi.Columns["DatumVremeTestiranja"].HeaderText = "Datum testiranja";
 
-            dgvZahtevi.Columns["Napomena"].DisplayIndex = 7;
+            dgvZahtevi.Columns["Napomena"].DisplayIndex = 6;
             dgvZahtevi.Columns["ImePrezimeOsiguranogLica"].DisplayIndex = 1;
             dgvZahtevi.Columns["ImePrezimeOsiguranogLica"].HeaderText = "Ime i prezime";
 
@@ -109,8 +108,8 @@ namespace Klijent
 
             dgvZahtevi.Columns["Hitno"].DisplayIndex = 3;
             dgvZahtevi.Columns["TipCombo"].DisplayIndex = 4;
-            dgvZahtevi.Columns["StatusCombo"].DisplayIndex = 5;
-            dgvZahtevi.Columns["RezultatCombo"].DisplayIndex = 6;
+            dgvZahtevi.Columns["StatusCombo"].DisplayIndex = 7;
+            dgvZahtevi.Columns["RezultatCombo"].DisplayIndex = 5;
 
             dgvZahtevi.Columns["ZahtevID"].Visible = false;
             dgvZahtevi.Columns["LaborantID"].Visible = false;
@@ -146,7 +145,9 @@ namespace Klijent
                     Tip = (string)row.Cells["TipCombo"].Value,
                     ZahtevID = (int)row.Cells["ZahtevID"].Value,
                 };
-                zahteviZaBazu.Add(z);
+                if(!zahteviZaBazu.Contains(z))
+                    zahteviZaBazu.Add(z);
+                row.DefaultCellStyle.BackColor = Color.LightGreen;
             }
         }
         private void ProveraIspravnosti()
@@ -169,7 +170,13 @@ namespace Klijent
 
         private void buttonSacuvajObradjene_Click(object sender, EventArgs e)
         {
-             //ovde cu one sto su dodati u listu 'zahtevi za bazu' da ubacim u bazu i refreshujem grid
+            if(Connection.Instance.SacuvajZahteve(zahteviZaBazu))
+            {
+                MessageBox.Show("Uspesno sacuvani zahtevi");
+                fixDGVData();
+            }
+            else
+                MessageBox.Show("Greska sa cuvanjem zahteva");
         }
 
         

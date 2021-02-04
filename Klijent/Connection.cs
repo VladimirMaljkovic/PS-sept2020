@@ -122,5 +122,21 @@ namespace Klijent
                 return true;
             return false;
         }
+
+        internal bool SacuvajZahteve(List<Zahtev> zahteviZaBazu)
+        {
+            Request req = new Request
+            {
+                Operacija = Operacija.SacuvajZahteve,
+                ZahteviZaBazu = zahteviZaBazu
+            };
+            formatter.Serialize(stream, req);
+
+            Answer ans = (Answer)formatter.Deserialize(stream);
+            if (ans.Uspesno)
+                return true;
+            return false;
+        }
     }
+
 }

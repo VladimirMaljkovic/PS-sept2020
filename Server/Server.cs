@@ -21,15 +21,7 @@ namespace Server
 
         public Server()
         {
-            broker = new Broker();
-            try
-            {
 
-            }
-            finally
-            {
-
-            }
         }
 
         public void StartServer()
@@ -82,6 +74,10 @@ namespace Server
                             VratiOsiguranaLica(ref ans);
                             formatter.Serialize(stream, ans);
                             break;
+                        case Operacija.SacuvajZahteve:
+                            SacuvajZahteve(ref ans, ref req);
+                            formatter.Serialize(stream, ans);
+                            break;
                         default:
                             break;
                     }
@@ -93,7 +89,22 @@ namespace Server
             }
         }
 
-        
+        private void SacuvajZahteve(ref Answer ans, ref Request req)
+        {
+            try
+            {
+                broker.OpenConnection();
+                ans.Objekat = broker.SacuvajZahteve(req.ZahteviZaBazu);
+                if (ans.Objekat != null)
+                {
+                    ans.Uspesno = true;
+                }
+            }
+            finally
+            {
+                broker.CloseConnection();
+            }
+        }
 
         private void VratiSveZahteve(ref Answer ans)
         {
@@ -147,51 +158,7 @@ namespace Server
         }
 
 
-
-        /*internal List<int> VratiIdZaDatiTip(string tipKompanije)
-        {
-            List<int> idjevi;
-            try
-            {
-                broker.OpenConnection();
-                idjevi = broker.VratiIdZaDatiTip(tipKompanije);
-            }
-            finally
-            {
-                broker.CloseConnection();
-            }
-            return idjevi;
-        }*/
-
-        /*private void DodajKompaniju(ref Request req, ref Answer ans, int kompanijaID)
-        {
-            try
-            {
-                broker.OpenConnection();
-                broker.DodajKompaniju(req.Kompanija, kompanijaID);
-            }
-            finally
-            {
-                broker.CloseConnection();
-            }
-        }*/
-
-        /*private void VratiSveBanke(ref Answer ans)  //u odgovoru je objekat koji je lista banaka
-        {
-            try
-            {
-                broker.OpenConnection();
-                ans.Objekat = broker.VratiSveBanke();
-                if (ans.Objekat != null)
-                {
-                    ans.Uspesno = true;
-                }
-            }
-            finally
-            {
-                broker.CloseConnection();
-            }
-        }*/
+        
         private void UlogujKorisnika(ref Request req, ref Answer ans)
         {
             Laborant laborant;
@@ -211,47 +178,7 @@ namespace Server
             }
         }
 
-        /*public List<Zaposleni> VratiZaposleneZaDGV()
-        {
-            List<Zaposleni> zaposleni = new List<Zaposleni>();
-            try
-            {
-                broker.OpenConnection();
-                zaposleni = broker.VratiZaposleneZaDGV();
-            }
-            finally
-            {
-                broker.CloseConnection();
-            }
-            return zaposleni;
-        }*/
-        /*private int VratiKompID(ref Request req, ref Answer ans)
-        {
-            int kompID;
-            try
-            {
-                broker.OpenConnection();
-                kompID = broker.VratiMaxIDKompanije();
-            }
-            finally
-            {
-                broker.CloseConnection();
-            }
-            return kompID;
-        }*/
-
-        /*private void DodajZaposlene(ref Request req, ref Answer ans, int kompanijaId)
-        {
-            try
-            {
-                broker.OpenConnection();
-                broker.DodajZaposlene(req.Zaposleni, kompanijaId);
-            }
-            finally
-            {
-                broker.CloseConnection();
-            }
-        }*/
+        
 
         
     }
