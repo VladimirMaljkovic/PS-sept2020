@@ -125,7 +125,7 @@ namespace Klijent
 
         private void buttonIzmeniIzabrani_Click(object sender, EventArgs e)
         {
-            ProveraIspravnosti();
+            ProveraIspravnosti(); //proverava da li su podaci uneti kako treba, AKO JE STAVLJENO DA JE 'OBRADJEN'
 
             zahteviZaBazu = new List<Zahtev>();
             foreach (DataGridViewRow row in dgvZahtevi.Rows)
@@ -153,16 +153,23 @@ namespace Klijent
         {
             foreach (DataGridViewRow row in dgvZahtevi.Rows)
             {
+                bool rowReady = true;
+
                 if ((string)row.Cells["StatusCombo"].Value != "Obradjen")
                     continue;
+                // ovde cu da ofarbam ceo red u zeleno ako je spreman za shippovanje, ako nije u crveno delove koji ne valjaju
 
+                if (row.Cells["TipCombo"].Value == null)
+                {
+                    row.Cells["TipCombo"].Style.BackColor = Color.Red;
+                }
 
             }
         }
 
         private void buttonSacuvajObradjene_Click(object sender, EventArgs e)
         {
-            
+             //ovde cu one sto su dodati u listu 'zahtevi za bazu' da ubacim u bazu i refreshujem grid
         }
 
         
