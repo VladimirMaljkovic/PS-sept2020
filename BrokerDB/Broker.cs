@@ -107,7 +107,7 @@ namespace BrokerBP
 
         public object SacuvajZahteve(List<Zahtev> zahteviZaBazu)
         {
-            //ovde mi treba update
+            return null;
         }
 
         public object VratiLaboratorije()

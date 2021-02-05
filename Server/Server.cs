@@ -21,7 +21,7 @@ namespace Server
 
         public Server()
         {
-
+            broker = new Broker();
         }
 
         public void StartServer()

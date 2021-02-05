@@ -124,34 +124,40 @@ namespace Klijent
 
         private void buttonIzmeniIzabrani_Click(object sender, EventArgs e)
         {
-            ProveraIspravnosti(); //proverava da li su podaci uneti kako treba, AKO JE STAVLJENO DA JE 'OBRADJEN'
-
-            zahteviZaBazu = new List<Zahtev>();
-            foreach (DataGridViewRow row in dgvZahtevi.Rows)
+            if (ProveraIspravnosti()) //proverava da li su podaci uneti kako treba, AKO JE STAVLJENO DA JE 'OBRADJEN'
             {
-                if ((string)row.Cells["StatusCombo"].Value != "Obradjen")
-                    continue;
-                Zahtev z = new Zahtev
+                zahteviZaBazu = new List<Zahtev>();
+                foreach (DataGridViewRow row in dgvZahtevi.Rows)
                 {
-                    Status = (string)row.Cells["StatusCombo"].Value,
-                    DatumVremeRezultata = DateTime.Now,
-                    DatumVremeTestiranja = (DateTime)row.Cells["DatumVremeTestiranja"].Value,
-                    Hitno = (bool)row.Cells["Hitno"].Value,
-                    LaborantID = laborant.LaborantID,
-                    LaboratorijaID = (int)row.Cells["LaboratorijaID"].Value,
-                    Napomena = (string)row.Cells["Napomena"].Value,
-                    OsiguranoLiceID = (int)row.Cells["OsiguranoLiceID"].Value,
-                    Rezultat = (string)row.Cells["RezultatCombo"].Value,
-                    Tip = (string)row.Cells["TipCombo"].Value,
-                    ZahtevID = (int)row.Cells["ZahtevID"].Value,
-                };
-                if(!zahteviZaBazu.Contains(z))
-                    zahteviZaBazu.Add(z);
-                row.DefaultCellStyle.BackColor = Color.LightGreen;
+                    if ((string)row.Cells["StatusCombo"].Value != "Obradjen")
+                        continue;
+                    Zahtev z = new Zahtev
+                    {
+                        Status = (string)row.Cells["StatusCombo"].Value,
+                        DatumVremeRezultata = DateTime.Now,
+                        DatumVremeTestiranja = (DateTime)row.Cells["DatumVremeTestiranja"].Value,
+                        Hitno = (bool)row.Cells["Hitno"].Value,
+                        LaborantID = laborant.LaborantID,
+                        LaboratorijaID = (int)row.Cells["LaboratorijaID"].Value,
+                        Napomena = (string)row.Cells["Napomena"].Value,
+                        OsiguranoLiceID = (int)row.Cells["OsiguranoLiceID"].Value,
+                        Rezultat = (string)row.Cells["RezultatCombo"].Value,
+                        Tip = (string)row.Cells["TipCombo"].Value,
+                        ZahtevID = (int)row.Cells["ZahtevID"].Value,
+                    };
+                    if (!zahteviZaBazu.Contains(z))
+                        zahteviZaBazu.Add(z);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nisu popunjeni svi potrebni podaci");
             }
         }
-        private void ProveraIspravnosti()
+        private bool ProveraIspravnosti()
         {
+            bool table_ready = true;
+            //ovde valjda treba da resetujem boje pred svaku proveru
             foreach (DataGridViewRow row in dgvZahtevi.Rows)
             {
                 bool rowReady = true;
@@ -163,20 +169,46 @@ namespace Klijent
                 if (row.Cells["TipCombo"].Value == null)
                 {
                     row.Cells["TipCombo"].Style.BackColor = Color.Red;
+                    rowReady = false;
+                    table_ready = false;
+                }
+
+                if (row.Cells["TipCombo"].Value == null)
+                {
+                    row.Cells["TipCombo"].Style.BackColor = Color.Red;
+                    rowReady = false;
+                    table_ready = false;
+                }
+
+                if (row.Cells["TipCombo"].Value == null)
+                {
+                    row.Cells["TipCombo"].Style.BackColor = Color.Red;
+                    rowReady = false;
+                    table_ready = false;
+                }
+
+                //jos provera
+
+
+                if (rowReady)
+                {
+                    //sve baci u zeleno lol
+                    row.DefaultCellStyle.BackColor = Color.LightGreen;
                 }
 
             }
+            return table_ready;
         }
 
         private void buttonSacuvajObradjene_Click(object sender, EventArgs e)
         {
-            if(Connection.Instance.SacuvajZahteve(zahteviZaBazu))
-            {
-                MessageBox.Show("Uspesno sacuvani zahtevi");
-                fixDGVData();
-            }
-            else
-                MessageBox.Show("Greska sa cuvanjem zahteva");
+            //if(Connection.Instance.SacuvajZahteve(zahteviZaBazu))
+            //{
+            //    MessageBox.Show("Uspesno sacuvani zahtevi");
+            //    fixDGVData();
+            //}
+            //else
+            //    MessageBox.Show("Greska sa cuvanjem zahteva");
         }
 
         
